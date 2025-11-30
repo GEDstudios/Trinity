@@ -1,118 +1,239 @@
-/* --- Base & Layout --- */
-body, html {
-    margin: 0;
-    padding: 32px;
-    background-color: #1B1716; /* Trinity Black */
-    font-family: monospace;
-    color: #FFFFFF;
-    box-sizing: border-box;
+/* --- Variables & Reset --- */
+:root {
+    /* Colors */
+    --bg-page: #0d0d0d;
+    --bg-card: #161616;
+    --bg-card-hover: #1a1a1a;
+    --border-card: #333;
+    
+    --text-main: #e0e0e0;
+    --text-muted: #666;
+    
+    --accent-primary: #B995FF; /* Trinity Lilac */
+    --accent-glow: rgba(185, 149, 255, 0.15);
+    --accent-active: #9300FF; /* Deep Purple */
+    --accent-highlight: #FDFF99; /* Pale Yellow */
+    --track-bg: #2a2a2a;
+
+    /* Light Mode Overrides */
+    --light-bg-card: #ffffff;
+    --light-border: #e0e0e0;
+    --light-text: #1a1a1a;
+    --light-track: #f0f0f0;
 }
 
+* { box-sizing: border-box; }
+
+body, html {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-page);
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-main);
+    -webkit-font-smoothing: antialiased;
+}
+
+body { padding: 40px 20px; }
+
+/* --- Typography & Layout --- */
 .subtitle {
     text-align: center;
     font-weight: 700;
-    color: #FFFFFF;
-    margin-bottom: 40px;
-    font-size: 1.5em;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    color: var(--text-main);
+    margin-bottom: 60px;
+    font-size: 1.25rem;
+    letter-spacing: 2px;
 }
 
-#animation-sections-container {
-    width: 100%;
+.subtitle .ext {
+    color: var(--text-muted);
 }
 
 .section-container {
-    width: 100%;
-    max-width: 1800px;
-    margin: 0 auto 48px auto;
+    max-width: 1400px;
+    margin: 0 auto 80px auto;
 }
 
 .section-container h3 {
-    font-size: 1.5em;
-    font-weight: 400;
-    color: #B995FF; /* Trinity Lilac */
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #333;
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    border-bottom: 1px solid var(--border-card);
+    padding-bottom: 15px;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
 }
 
 .section-description {
-    font-size: 15px;
-    font-style: italic;
-    color: #888;
-    margin-top: -10px;
-    margin-bottom: 25px;
-    line-height: 1.5;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    max-width: 600px;
 }
 
 .animation-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 40px;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 30px;
     width: 100%;
-    justify-content: center;
 }
 
-/* --- Animation Card --- */
+/* --- Card Component --- */
 .animation-wrapper {
-    position: relative;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: 12px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    background-color: #2a2524; /* Slightly lighter than BG */
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    box-sizing: border-box;
-    border: 1px solid transparent;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.animation-wrapper:hover {
+    transform: translateY(-4px);
+    background-color: var(--bg-card-hover);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border-color: var(--accent-primary);
+}
+
+.animation-wrapper.playing {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 1px var(--accent-primary), 0 10px 40px var(--accent-glow);
+}
+
+/* Header & Tags */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    height: 24px; /* Fixed height for alignment */
 }
 
 .lottie-title {
-    font-size: 14px;
-    color: #B995FF; /* Lilac */
-    margin-bottom: 15px;
-    text-align: center;
-    font-weight: bold;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.feedback-note {
+    font-size: 0.7rem;
+    background: rgba(253, 255, 153, 0.1);
+    color: var(--accent-highlight);
+    border: 1px solid rgba(253, 255, 153, 0.3);
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+/* Canvas Area */
+.canvas-container {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: radial-gradient(circle at center, #222 0%, #161616 70%);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .lottie-animation {
     width: 100%;
-    max-width: 400px;
-    height: auto;
-    aspect-ratio: 1 / 1;
+    height: 100%;
     cursor: pointer;
+}
+
+.lottie-animation canvas {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+}
+
+/* --- Controls Area --- */
+.controls-area {
+    margin-top: auto;
+}
+
+/* Timeline */
+.timeline-simple {
     margin-bottom: 15px;
 }
 
-.frame-counter {
-    color: #888;
-    font-size: 14px;
-    height: 20px;
+.timeline-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    font-weight: 600;
 }
 
-/* --- Theme Toggle --- */
+.frame-counter {
+    color: var(--accent-primary);
+}
+
+.timeline-container {
+    width: 100%;
+    height: 4px;
+    background-color: var(--track-bg);
+    border-radius: 2px;
+    position: relative;
+}
+
+.timeline-progress-fill {
+    height: 100%;
+    width: 0%;
+    background-color: var(--accent-primary);
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}
+
+.playhead-marker {
+    position: absolute;
+    top: 50%;
+    width: 8px; 
+    height: 8px;
+    background-color: #FFF;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    box-shadow: 0 0 8px var(--accent-primary);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.playing .playhead-marker, 
+.animation-wrapper:hover .playhead-marker {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* --- Toggle Switch --- */
 .toggle-container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 100%;
-    margin-top: 20px;
+    justify-content: flex-end;
+    gap: 8px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 15px;
 }
 
 .toggle-label {
-    font-size: 14px;
-    color: #888;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    font-weight: 700;
 }
 
 .switch {
     position: relative;
     display: inline-block;
-    width: 50px;
-    height: 28px;
-    margin: 0 10px;
-    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    width: 36px;
+    height: 20px;
 }
 
 .switch input { opacity: 0; width: 0; height: 0; }
@@ -120,154 +241,46 @@ body, html {
 .slider {
     position: absolute;
     cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #444;
-    transition: .4s;
-    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--track-bg);
+    transition: .3s;
+    border-radius: 20px;
+    border: 1px solid var(--border-card);
 }
 
 .slider:before {
     position: absolute;
     content: "";
-    height: 18px;
-    width: 18px;
-    left: 5px;
-    bottom: 5px;
-    background-color: #FDFF99; /* Pale Yellow */
-    transition: .4s;
+    height: 12px;
+    width: 12px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--text-muted);
+    transition: .3s;
     border-radius: 50%;
 }
 
-input:checked + .slider { background-color: #9300FF; /* Trinity Purple */ }
-input:checked + .slider:before { transform: translateX(22px); background-color: #fff; }
+input:checked + .slider { background-color: var(--text-main); border-color: var(--text-main); }
+input:checked + .slider:before { transform: translateX(16px); background-color: var(--bg-card); }
 
-/* --- Timeline --- */
-.timeline-container {
-    width: 100%;
-    height: 12px;
-    border-radius: 6px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    background-color: #000;
-}
-
-.timeline-segment {
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    opacity: 0.3;
-    transition: opacity 0.1s ease-in-out;
-}
-.timeline-segment.active { opacity: 1; }
-
-/* Palette Application for Segments */
-/* Intro = Lilac, Loop = Purple, Outro = Yellow */
-.segment-intro { background-color: #B995FF; border-top-left-radius: 6px; border-bottom-left-radius: 6px; }
-.segment-loop { background-color: #9300FF; }
-.segment-outro { background-color: #FDFF99; border-top-right-radius: 6px; border-bottom-right-radius: 6px; }
-.segment-full { background-color: #9300FF; width: 100%; border-radius: 6px; }
-
-/* Progress Fill */
-.timeline-progress-fill { position: absolute; top: 0; left: 0; height: 100%; width: 0%; }
-
-.progress-intro { background-color: #FFFFFF; opacity: 0.5; } 
-.progress-loop { background-color: #FFFFFF; opacity: 0.5; }
-.progress-outro { background-color: #1B1716; opacity: 0.5; } /* Dark fill for yellow bg */
-.progress-full { background-color: #FFFFFF; opacity: 0.5; }
-
-/* Timeline Markers */
-.timeline-marker {
-    position: absolute;
-    top: 0;
-    width: 2px;
-    height: 100%;
-    background-color: #000;
-    opacity: 0.5;
-    z-index: 1;
-}
-
-.playhead-marker {
-    position: absolute;
-    top: -2px;
-    left: 0%;
-    width: 2px;
-    height: 16px;
-    background-color: #FFFFFF;
-    border-radius: 1px;
-    z-index: 2;
-    pointer-events: none;
-    opacity: 0;
-    box-shadow: 0 0 4px #9300FF;
-}
-
-/* Labels */
-.timeline-labels, .timeline-framenumbers {
-    width: 100%;
-    position: relative;
-    height: 20px;
-}
-.timeline-framenumbers { font-size: 12px; margin-top: 5px; }
-.timeline-labels { font-size: 14px; }
-
-.timeline-label, .timeline-framenumber {
-    position: absolute;
-    color: #666;
-}
-.timeline-label.active, .timeline-framenumber.active {
-    color: #B995FF; /* Lilac active text */
-    font-weight: bold;
-}
-
-.label-intro, .frame-num-start { left: 0; }
-.label-loop { left: 50%; transform: translateX(-50%); }
-.label-outro, .frame-num-end { right: 0; }
-
-/* --- Light Mode (White BG) --- */
+/* --- Light Mode Specifics --- */
 .animation-wrapper.light-mode {
-    background-color: #FFFFFF;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    border: 1px solid #eee;
-}
-.animation-wrapper.light-mode .lottie-title { color: #9300FF; } /* Purple text */
-.animation-wrapper.light-mode .frame-counter { color: #1B1716; }
-.animation-wrapper.light-mode .timeline-container { background-color: #ddd; }
-.animation-wrapper.light-mode .playhead-marker { background-color: #1B1716; }
-
-/* Light Mode specific fixes for Yellow visibility */
-.animation-wrapper.light-mode .segment-outro { 
-    background-color: #FDFF99; 
-    border-left: 1px solid rgba(0,0,0,0.1); 
+    background-color: var(--light-bg-card);
+    border-color: var(--light-border);
 }
 
-/* --- Playing State --- */
-.animation-wrapper.playing {
-    border-color: #9300FF; /* Trinity Purple border */
+.animation-wrapper.light-mode:hover {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-.feedback-note {
-    font-size: 11px;
-    color: #FDFF99; /* Yellow note */
-    margin-bottom: 10px;
-    text-align: center;
-    font-style: italic;
-    width: 100%;
-    opacity: 0.9;
-}
-.animation-wrapper.light-mode .feedback-note { color: #9300FF; }
-
-.timeline-simple, .timeline-looping { display: none; width: 100%; }
-.animation-wrapper[data-timeline-type="simple"] .timeline-simple { display: block; }
-.animation-wrapper[data-timeline-type="loop"] .timeline-looping { display: block; }/* --- Add this to your previous style.css --- */
-
-/* Ensure the canvas injected by DotLottie fills the container */
-.lottie-animation canvas {
-    width: 100% !important;
-    height: 100% !important;
-    display: block;
+.animation-wrapper.light-mode .lottie-title { color: var(--accent-active); }
+.animation-wrapper.light-mode .canvas-container { background: #f4f4f4; }
+.animation-wrapper.light-mode .timeline-container { background-color: var(--light-track); }
+.animation-wrapper.light-mode .timeline-progress-fill { background-color: var(--accent-active); }
+.animation-wrapper.light-mode .playhead-marker { background-color: var(--accent-active); box-shadow: none; }
+.animation-wrapper.light-mode .slider { background-color: var(--light-track); border-color: #ddd; }
+.animation-wrapper.light-mode .feedback-note { 
+    background: rgba(147, 0, 255, 0.05);
+    color: var(--accent-active);
+    border-color: rgba(147, 0, 255, 0.2);
 }
