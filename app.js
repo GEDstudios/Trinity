@@ -10,7 +10,7 @@ import { DotLottie } from 'https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-w
         {
             id: 'logotype-section',
             title: 'Logotype',
-            description: 'Main text animations.',
+            description: '',
             animations: [
                 { 
                     fileName: "Logotype Intro.lottie", 
@@ -27,7 +27,7 @@ import { DotLottie } from 'https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-w
         {
             id: 'symbol-section',
             title: 'Symbol',
-            description: 'Iconography and In/Out states.',
+            description: '',
             animations: [
                 { 
                     fileName: "Symbol Idle.lottie", 
@@ -51,7 +51,7 @@ import { DotLottie } from 'https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-w
         {
             id: 'slides-section',
             title: 'Slides & Unique',
-            description: 'Presentation backgrounds and code snippets.',
+            description: '',
             animations: [
                 { 
                     fileName: "Slide_Gradients.lottie",
