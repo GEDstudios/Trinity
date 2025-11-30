@@ -1,0 +1,273 @@
+/* --- Base & Layout --- */
+body, html {
+    margin: 0;
+    padding: 32px;
+    background-color: #1B1716; /* Trinity Black */
+    font-family: monospace;
+    color: #FFFFFF;
+    box-sizing: border-box;
+}
+
+.subtitle {
+    text-align: center;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 40px;
+    font-size: 1.5em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+#animation-sections-container {
+    width: 100%;
+}
+
+.section-container {
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto 48px auto;
+}
+
+.section-container h3 {
+    font-size: 1.5em;
+    font-weight: 400;
+    color: #B995FF; /* Trinity Lilac */
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+}
+
+.section-description {
+    font-size: 15px;
+    font-style: italic;
+    color: #888;
+    margin-top: -10px;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.animation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 40px;
+    width: 100%;
+    justify-content: center;
+}
+
+/* --- Animation Card --- */
+.animation-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2a2524; /* Slightly lighter than BG */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.lottie-title {
+    font-size: 14px;
+    color: #B995FF; /* Lilac */
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.lottie-animation {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.frame-counter {
+    color: #888;
+    font-size: 14px;
+    height: 20px;
+}
+
+/* --- Theme Toggle --- */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.toggle-label {
+    font-size: 14px;
+    color: #888;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+    margin: 0 10px;
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #444;
+    transition: .4s;
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 5px;
+    bottom: 5px;
+    background-color: #FDFF99; /* Pale Yellow */
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider { background-color: #9300FF; /* Trinity Purple */ }
+input:checked + .slider:before { transform: translateX(22px); background-color: #fff; }
+
+/* --- Timeline --- */
+.timeline-container {
+    width: 100%;
+    height: 12px;
+    border-radius: 6px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    background-color: #000;
+}
+
+.timeline-segment {
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    opacity: 0.3;
+    transition: opacity 0.1s ease-in-out;
+}
+.timeline-segment.active { opacity: 1; }
+
+/* Palette Application for Segments */
+/* Intro = Lilac, Loop = Purple, Outro = Yellow */
+.segment-intro { background-color: #B995FF; border-top-left-radius: 6px; border-bottom-left-radius: 6px; }
+.segment-loop { background-color: #9300FF; }
+.segment-outro { background-color: #FDFF99; border-top-right-radius: 6px; border-bottom-right-radius: 6px; }
+.segment-full { background-color: #9300FF; width: 100%; border-radius: 6px; }
+
+/* Progress Fill */
+.timeline-progress-fill { position: absolute; top: 0; left: 0; height: 100%; width: 0%; }
+
+.progress-intro { background-color: #FFFFFF; opacity: 0.5; } 
+.progress-loop { background-color: #FFFFFF; opacity: 0.5; }
+.progress-outro { background-color: #1B1716; opacity: 0.5; } /* Dark fill for yellow bg */
+.progress-full { background-color: #FFFFFF; opacity: 0.5; }
+
+/* Timeline Markers */
+.timeline-marker {
+    position: absolute;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background-color: #000;
+    opacity: 0.5;
+    z-index: 1;
+}
+
+.playhead-marker {
+    position: absolute;
+    top: -2px;
+    left: 0%;
+    width: 2px;
+    height: 16px;
+    background-color: #FFFFFF;
+    border-radius: 1px;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    box-shadow: 0 0 4px #9300FF;
+}
+
+/* Labels */
+.timeline-labels, .timeline-framenumbers {
+    width: 100%;
+    position: relative;
+    height: 20px;
+}
+.timeline-framenumbers { font-size: 12px; margin-top: 5px; }
+.timeline-labels { font-size: 14px; }
+
+.timeline-label, .timeline-framenumber {
+    position: absolute;
+    color: #666;
+}
+.timeline-label.active, .timeline-framenumber.active {
+    color: #B995FF; /* Lilac active text */
+    font-weight: bold;
+}
+
+.label-intro, .frame-num-start { left: 0; }
+.label-loop { left: 50%; transform: translateX(-50%); }
+.label-outro, .frame-num-end { right: 0; }
+
+/* --- Light Mode (White BG) --- */
+.animation-wrapper.light-mode {
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
+}
+.animation-wrapper.light-mode .lottie-title { color: #9300FF; } /* Purple text */
+.animation-wrapper.light-mode .frame-counter { color: #1B1716; }
+.animation-wrapper.light-mode .timeline-container { background-color: #ddd; }
+.animation-wrapper.light-mode .playhead-marker { background-color: #1B1716; }
+
+/* Light Mode specific fixes for Yellow visibility */
+.animation-wrapper.light-mode .segment-outro { 
+    background-color: #FDFF99; 
+    border-left: 1px solid rgba(0,0,0,0.1); 
+}
+
+/* --- Playing State --- */
+.animation-wrapper.playing {
+    border-color: #9300FF; /* Trinity Purple border */
+}
+
+.feedback-note {
+    font-size: 11px;
+    color: #FDFF99; /* Yellow note */
+    margin-bottom: 10px;
+    text-align: center;
+    font-style: italic;
+    width: 100%;
+    opacity: 0.9;
+}
+.animation-wrapper.light-mode .feedback-note { color: #9300FF; }
+
+.timeline-simple, .timeline-looping { display: none; width: 100%; }
+.animation-wrapper[data-timeline-type="simple"] .timeline-simple { display: block; }
+.animation-wrapper[data-timeline-type="loop"] .timeline-looping { display: block; }/* --- Add this to your previous style.css --- */
+
+/* Ensure the canvas injected by DotLottie fills the container */
+.lottie-animation canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
