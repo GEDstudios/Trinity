@@ -91,6 +91,17 @@ body { padding: 40px 20px; }
     overflow: hidden;
 }
 
+/* WIDE CARD VARIANT */
+.animation-wrapper.is-wide {
+    grid-column: span 2;
+}
+
+@media (max-width: 800px) {
+    .animation-wrapper.is-wide {
+        grid-column: span 1;
+    }
+}
+
 .animation-wrapper:hover {
     transform: translateY(-4px);
     background-color: var(--bg-card-hover);
@@ -103,13 +114,18 @@ body { padding: 40px 20px; }
     box-shadow: 0 0 0 1px var(--accent-primary), 0 10px 40px var(--accent-glow);
 }
 
+/* --- Unique / Slide Card Variants --- */
+.animation-wrapper.is-unique {
+    /* Unique styling hooks */
+}
+
 /* Header & Tags */
 .card-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 20px;
-    height: 24px; /* Fixed height for alignment */
+    height: 24px;
 }
 
 .lottie-title {
@@ -133,7 +149,7 @@ body { padding: 40px 20px; }
 /* Canvas Area */
 .canvas-container {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1 / 1; /* Standard Square */
     background: radial-gradient(circle at center, #222 0%, #161616 70%);
     border-radius: 8px;
     margin-bottom: 20px;
@@ -141,6 +157,17 @@ body { padding: 40px 20px; }
     align-items: center;
     justify-content: center;
     overflow: hidden;
+}
+
+/* Unique: Remove gradient */
+.is-unique .canvas-container {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Wide Cards: Wider aspect ratio */
+.animation-wrapper.is-wide .canvas-container {
+    aspect-ratio: 2.2 / 1;
 }
 
 .lottie-animation {

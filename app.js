@@ -47,6 +47,35 @@ import { DotLottie } from 'https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-w
                     feedback: "Quick interaction"
                 }
             ]
+        },
+        {
+            id: 'slides-section',
+            title: 'Slides & Unique',
+            description: 'Presentation backgrounds and code snippets.',
+            animations: [
+                { 
+                    fileName: "Slide_Gradients.lottie",
+                    folder: "Unique",
+                    feedback: "Continuous Loop"
+                },
+                { 
+                    fileName: "Slide_Squares.lottie",
+                    folder: "Unique",
+                    feedback: "Continuous Loop"
+                },
+                { 
+                    fileName: "Slide_Stroke.lottie",
+                    folder: "Unique",
+                    feedback: "Continuous Loop"
+                },
+                { 
+                    fileName: "TextCode.lottie",
+                    folder: "Unique",
+                    feedback: "Continuous Loop",
+                    bgColor: "#EFEAFE",
+                    isWide: true /* ADDED: Triggers span 2 cols */
+                }
+            ]
         }
     ];
 
@@ -64,14 +93,15 @@ import { DotLottie } from 'https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-w
             this.isHovering = false;
             this.isLightMode = false;
             
-            // Check if this is the specific "Logotype Intro" animation
             this.isLogotypeIntro = this.animationData.fileName.includes("Logotype Intro");
+            this.isUnique = this.animationData.folder === 'Unique';
 
             this.boundOnFrame = this.onFrame.bind(this);
             this.boundOnLoad = this.onLoad.bind(this);
             this.boundOnComplete = this.onComplete.bind(this);
 
             this.cacheDomElements();
+            this.initLayout();
             this.attachEventListeners();
             this.loadAnimationForTheme(this.isLightMode);
         }
@@ -81,7 +111,9 @@ import { DotLottie } from 'https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-w
                 frameCounter: this.wrapper.querySelector('.frame-counter'),
                 playheadMarker: this.wrapper.querySelector('.playhead-marker'),                
                 themeToggle: this.wrapper.querySelector('.theme-toggle'),
+                toggleContainer: this.wrapper.querySelector('.toggle-container'),
                 progressFull: this.wrapper.querySelector('.timeline-progress-fill'),
+                canvasContainer: this.wrapper.querySelector('.canvas-container'),
                 frameNums: {
                     start: this.wrapper.querySelector('.frame-num-start'),
                     end: this.wrapper.querySelector('.frame-num-end')
@@ -89,19 +121,40 @@ import { DotLottie } from 'https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-w
             };
         }
 
+        initLayout() {
+            if (this.isUnique) {
+                this.wrapper.classList.add('is-unique');
+                
+                if (this.ui.toggleContainer) {
+                    this.ui.toggleContainer.style.display = 'none';
+                }
+
+                if (this.animationData.bgColor && this.ui.canvasContainer) {
+                    this.ui.canvasContainer.style.background = this.animationData.bgColor;
+                    this.ui.canvasContainer.style.backgroundImage = 'none';
+                }
+            }
+        }
+
         attachEventListeners() {
             this.containerDiv.addEventListener('mouseenter', this.onHoverStart.bind(this));
             this.containerDiv.addEventListener('mouseleave', this.onHoverEnd.bind(this));
-            this.ui.themeToggle.addEventListener('change', this.onThemeChange.bind(this));
+            
+            if (!this.isUnique && this.ui.themeToggle) {
+                this.ui.themeToggle.addEventListener('change', this.onThemeChange.bind(this));
+            }
         }
 
         loadAnimationForTheme(isLight) {
-            const themeFolder = isLight ? 'White' : 'Black';
-            const path = `Lotties/${themeFolder}/${this.animationData.fileName}`;
+            let path;
 
-            // CHANGED LOGIC:
-            // If it's the Intro: Autoplay OFF, Loop OFF (wait for hover)
-            // Everything else: Autoplay ON, Loop ON (ignore hover)
+            if (this.isUnique) {
+                path = `Lotties/Unique/${this.animationData.fileName}`;
+            } else {
+                const themeFolder = isLight ? 'White' : 'Black';
+                path = `Lotties/${themeFolder}/${this.animationData.fileName}`;
+            }
+
             const shouldLoop = !this.isLogotypeIntro;
             const shouldAutoplay = !this.isLogotypeIntro;
 
@@ -130,7 +183,6 @@ import { DotLottie } from 'https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-w
                 this.totalFrames = Math.floor(this.dotLottie.totalFrames);
                 if (this.ui.frameNums.end) this.ui.frameNums.end.textContent = this.totalFrames;
                 
-                // If it's NOT autoplaying (e.g. Intro), ensure we are at frame 0
                 if (this.isLogotypeIntro) {
                     this.dotLottie.setFrame(0);
                     this.updateTimelineUI(0, false);
@@ -144,22 +196,17 @@ import { DotLottie } from 'https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-w
         }
 
         onComplete() {
-            // Only relevant for Logotype Intro (others loop forever)
             if (this.isLogotypeIntro) {
-                // Keep the highlight active
                 this.wrapper.classList.add('playing'); 
             }
         }
 
         onHoverStart() {
-            // Always add visual highlight class
             this.wrapper.classList.add('playing');
             this.isHovering = true;
 
             if (!this.dotLottie || !this.dotLottie.isLoaded) return;
             
-            // Only manually trigger play for the Intro
-            // The others are already playing
             if (this.isLogotypeIntro) {
                 this.dotLottie.setFrame(0);
                 this.dotLottie.play();
@@ -170,8 +217,6 @@ import { DotLottie } from 'https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-w
             this.isHovering = false;
             this.wrapper.classList.remove('playing');
 
-            // Only manually stop the Intro
-            // The others should keep playing
             if (this.isLogotypeIntro) {
                 this.dotLottie.pause();
                 this.dotLottie.setFrame(0);
@@ -203,13 +248,7 @@ import { DotLottie } from 'https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-w
                 this.ui.progressFull.style.width = `${progressPercent}%`;
             }
 
-            // Determine visibility of playhead
-            // Visible if: 
-            // 1. Is Playing
-            // 2. OR it's the Intro, it's hovering, and it's holding at the end
             let showMarker = isPlaying;
-            
-            // Special case for Intro Hold state
             if (this.isLogotypeIntro && this.isHovering && !isPlaying) {
                 showMarker = true; 
             }
@@ -266,6 +305,11 @@ import { DotLottie } from 'https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-w
                 feedbackEl.className = 'feedback-note';
                 feedbackEl.textContent = animationData.feedback;
                 titleEl.parentNode.appendChild(feedbackEl);
+            }
+
+            /* ADDED: Check for wide card property */
+            if (animationData.isWide) {
+                wrapper.classList.add('is-wide');
             }
 
             wrapper.addEventListener('themeChange', (e) => {
