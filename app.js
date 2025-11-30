@@ -68,8 +68,7 @@ import { DotLottie } from 'https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-w
                     folder: "Unique",
                     feedback: "Continuous Loop"
                 },
-/*
-                { 
+                {/*
                     fileName: "TextCode.lottie",
                     folder: "Unique",
                     feedback: "Continuous Loop",
