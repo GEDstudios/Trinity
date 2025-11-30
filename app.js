@@ -64,10 +64,11 @@ import { DotLottie } from 'https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-w
                     feedback: "Continuous Loop"
                 },
                 { 
-                  /*  fileName: "Slide_Stroke.lottie",
+                    fileName: "Slide_Stroke.lottie",
                     folder: "Unique",
                     feedback: "Continuous Loop"
                 },
+/*
                 { 
                     fileName: "TextCode.lottie",
                     folder: "Unique",
