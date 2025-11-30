@@ -64,7 +64,7 @@ import { DotLottie } from 'https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-w
                     feedback: "Continuous Loop"
                 },
                 { 
-                    fileName: "Slide_Stroke.lottie",
+                  /*  fileName: "Slide_Stroke.lottie",
                     folder: "Unique",
                     feedback: "Continuous Loop"
                 },
@@ -73,7 +73,7 @@ import { DotLottie } from 'https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-w
                     folder: "Unique",
                     feedback: "Continuous Loop",
                     bgColor: "#EFEAFE",
-                    isWide: true /* ADDED: Triggers span 2 cols */
+                    isWide: true */
                 }
             ]
         }
